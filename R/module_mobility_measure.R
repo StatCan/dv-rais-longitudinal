@@ -9,7 +9,8 @@ mob_measure_ui <- function(id) {
       uiOutput(NS(id, "trade_control")),
       uiOutput(NS(id, "mode_control")),
       uiOutput(NS(id, "type_control")),
-      uiOutput(NS(id, "unit_control"))
+      uiOutput(NS(id, "unit_control")),
+      uiOutput(NS(id, "text_source"))
     ), 
     
     mainPanel(
@@ -29,7 +30,7 @@ mob_measure_ui <- function(id) {
 
       #tableOutput(NS(id, "outtable")),
       fillRow(
-        plotlyOutput(NS(id, "outPlot"), height = "550px"),
+        plotlyOutput(NS(id, "outPlot"), height = "500px"),
         width = "100%"
       )
     )
@@ -39,10 +40,10 @@ mob_measure_ui <- function(id) {
 mob_measure_server <- function(id, language) {
 
   moduleServer(id, function(input, output, session) {
-    source("R/format_number.R")
-    source("R/valuebox.R")
+    source("../R/format_number.R")
+    source("../R/valuebox.R")
     
-    dictionary <- read.csv('dictionary/dict_mobility_measures.csv') %>%
+    dictionary <- read.csv('../dictionary/dict_mobility_measures.csv') %>%
       split(.$key)
     
     # uses a reactiveVal language.
@@ -58,21 +59,24 @@ mob_measure_server <- function(id, language) {
     })
     
     # load in the data file
-    # full <- download_data(
-    #   "37100205", c("trade", "mode", "years", "type", "ind")) %>%
-    # to use pre-downloaded Rds file
-    full <- readRDS("data/mobility_measures.Rds") %>%
-    # to use pre-downloaded csv file 
-    # read_csv("data/mobility_measures.csv",
-    #          col_types = cols_only(
-    #            REF_DATE = col_integer(),
-    #            dim_geo = col_integer(),
-    #            dim_trade = col_integer(),
-    #            dim_mode = col_integer(),
-    #            dim_years = col_integer(),
-    #            dim_type = col_integer(),
-    #            dim_ind = col_integer(),
-    #            VALUE = col_double())) %>% 
+    # first, try to download the Rds file from GitHub
+    tmp <- tempfile()
+    resp <-
+      GET(
+        "https://github.com/StatCan/dv-rais-longitudinal/raw/main/data/mobility_measures.Rds",
+        write_disk(tmp)
+      )
+    # check if the response was "successful" (200)
+    if (resp$status_code == 200) {
+      # then load the data from downloaded RDS file.
+      full <- readRDS(tmp)
+      unlink(tmp)
+    } else {
+      # to use pre-downloaded Rds file
+      full <- readRDS("../data/mobility_measures.Rds")
+    }
+    
+    full <- full %>%
       pivot_wider(id_cols=c(REF_DATE, dim_geo, dim_trade, dim_mode, dim_years, dim_type),
                   names_from=dim_ind, values_from=c(VALUE, STATUS)) %>%
       as.data.frame()
@@ -250,6 +254,18 @@ mob_measure_server <- function(id, language) {
         label = NULL,
         choices = setNames(1:2, tr("mem_unit")), 
         selected = 2)
+      }
+    })
+    
+    output$text_source <- renderUI({
+      if (language() == "en") {
+        url <-
+          a("Table 37-10-0205-01", href = "https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3710020501")
+        tagList("Statistics Canada. ", url)
+      } else {
+        url <-
+          a("Tableau 37-10-0205-01", href = "https://www150.statcan.gc.ca/t1/tbl1/fr/tv.action?pid=3710020501")
+        tagList("Statistique Canada. ", url)
       }
     })
     

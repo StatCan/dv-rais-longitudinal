@@ -2,23 +2,12 @@ mob_matrix_ui <- function(id) {
   sidebarLayout(
     sidebarPanel(
       uiOutput(NS(id, "year_control")),
-      
       uiOutput(NS(id, "time_control")),
-      
       uiOutput(NS(id, "trade_control")),
-      
       uiOutput(NS(id, "mode_control")),
-      
       uiOutput(NS(id, "type_control")),
-      
-      uiOutput(NS(id, "region_selection"))
-      
-      # uiOutput(NS(id, "all_regions")),
-      # 
-      # conditionalPanel(
-      #   condition = paste0("input['", NS(id, "all_regions"), "'] == false"),
-      #   uiOutput(NS(id, "region_selection"))
-      # )
+      uiOutput(NS(id, "region_selection")),
+      uiOutput(NS(id, "text_source"))
       
     ), # sidebarPanel
     
@@ -36,8 +25,7 @@ mob_matrix_server <- function(id, language, innerSize) {
 
   moduleServer(id, function(input, output, session) {
     # load in the dictionary.
-    source("R/download_data.R")
-    dictionary <- read.csv('dictionary/dict_mobility_matrix.csv') %>%
+    dictionary <- read.csv('../dictionary/dict_mobility_matrix.csv') %>%
       split(.$key)
     
     # uses a reactiveVal language.
@@ -46,9 +34,22 @@ mob_matrix_server <- function(id, language, innerSize) {
     }
     
     # load in the data file
-    # full <- download_data(
-    #   "37100204", c("trad", "mode", "years", "type", "to")) %>%
-    full <- readRDS("data/mobility_matrix.Rds") %>% # use downloaded Rds file - much faster
+    # first, try to download the Rds file from GitHub
+    tmp <- tempfile()
+    resp <-
+      GET(
+        "https://github.com/StatCan/dv-rais-longitudinal/raw/main/data/mobility_matrix.Rds",
+        write_disk(tmp)
+      )
+    # check if the response was "successful" (200)
+    if (resp$status_code == 200) {
+      # then load the data from downloaded RDS file.
+      full <- readRDS(tmp)
+      unlink(tmp)
+    } else {
+      full <- readRDS("../data/mobility_matrix.Rds")
+    }
+    full <- full %>%
         rename(from = dim_geo, to = dim_to) %>%
         as.data.frame() %>%
         filter(!is.na(VALUE) & VALUE > 0 & to > 4) %>%
@@ -56,7 +57,7 @@ mob_matrix_server <- function(id, language, innerSize) {
         filter(from != to)
     
     # load in the meta data
-    meta <- read_csv("data/mobility_matrix_metadata.csv")
+    meta <- read_csv("../data/mobility_matrix_metadata.csv")
     
     # define region and colour of each region as named lists.
     region = setNames(meta$region, meta$code)
@@ -168,6 +169,18 @@ mob_matrix_server <- function(id, language, innerSize) {
           selected = c(1:11),
           multiple = TRUE
         )
+    })
+    
+    output$text_source <- renderUI({
+      if (language() == "en") {
+        url <-
+          a("Table 37-10-0204-01", href = "https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3710020401")
+        tagList("Statistics Canada. ", url)
+      } else {
+        url <-
+          a("Tableau 37-10-0204-01", href = "https://www150.statcan.gc.ca/t1/tbl1/fr/tv.action?pid=3710020401")
+        tagList("Statistique Canada. ", url)
+      }
     })
     
     df <- reactive({
