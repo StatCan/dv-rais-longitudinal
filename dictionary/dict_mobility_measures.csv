@@ -62,8 +62,8 @@ mem_comp,Trades,Métiers
 mem_comp,Year of certification,Année d'obtention du certificat
 mem_unit,Number,Nombre
 mem_unit,Percentage,Pourcentage
-sAll_lbl,Select All,Sélectionnez tout
+sAll_lbl,Select All,Sélectionner tout
 dsAll_lbl,Deselect All,Désélectionner tout
 f_mesg,Data is too unreliable to be published,Les données sont trop peu fiable pour être publié
-text_no_trade,Select trades,Sélectionnez des métiers
-text_no_geo,Select regions,Sélectionnez des régions
+text_no_trade,Select trades,Sélectionner des métiers
+text_no_geo,Select regions,Sélectionner des régions
