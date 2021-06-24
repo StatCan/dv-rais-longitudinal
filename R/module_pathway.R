@@ -8,6 +8,7 @@ pathway_ui <- function(id) {
       uiOutput(NS(id, 'times_control')),
       uiOutput(NS(id, "trade_control")),
       uiOutput(NS(id, "geo_control")),
+      tags$style(type='text/css', ".dropdown-menu {max-height: 480px}"), 
       
       
       width = 4
@@ -31,7 +32,7 @@ pathway_ui <- function(id) {
       
       # tableOutput(NS(id, "outtable")),
       fillRow(
-        plotlyOutput(NS(id, "outBarChart"), height = "50px"),
+        plotlyOutput(NS(id, "outBarChart"), height = "550px"),
         width = "100%"
       )
     )
