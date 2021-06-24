@@ -11,14 +11,10 @@ mob_matrix_ui <- function(id) {
       
       uiOutput(NS(id, "type_control")),
       
-      uiOutput(NS(id, "region_selection"))
+      uiOutput(NS(id, "region_selection")),
       
-      # uiOutput(NS(id, "all_regions")),
-      # 
-      # conditionalPanel(
-      #   condition = paste0("input['", NS(id, "all_regions"), "'] == false"),
-      #   uiOutput(NS(id, "region_selection"))
-      # )
+      tags$style(type='text/css', ".dropdown-menu {max-height: 480px}"), 
+      
       
     ), # sidebarPanel
     
@@ -46,9 +42,23 @@ mob_matrix_server <- function(id, language, innerSize) {
     }
     
     # load in the data file
-    # full <- download_data(
-    #   "37100204", c("trad", "mode", "years", "type", "to")) %>%
-    full <- readRDS("data/mobility_matrix.Rds") %>% # use downloaded Rds file - much faster
+
+    # first, try to download the Rds file from GitHub
+    tmp <- tempfile()
+    resp <-
+      GET(
+        "https://github.com/StatCan/dv-rais-longitudinal/raw/master/data/mobility_matrix.Rds",
+        write_disk(tmp)
+      )
+    # check if the response was "successful" (200)
+    if (resp$status_code == 200) {
+      # then load the data from downloaded RDS file.
+      full <- readRDS(tmp)
+      unlink(tmp)
+    } else {
+      full <- readRDS("data/mobility_matrix.Rds")
+    }
+    full <- full %>%
         rename(from = dim_geo, to = dim_to) %>%
         as.data.frame() %>%
         filter(!is.na(VALUE) & VALUE > 0 & to > 4) %>%
