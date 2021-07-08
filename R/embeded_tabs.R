@@ -7,8 +7,6 @@ inc_embedded_tabs_ui <- function(id){
   )
 }
 
-
-
 inc_embeded_tabs_server <- function(id, language) {
   
   moduleServer(id, function(input, output, session) {
@@ -54,8 +52,6 @@ mob_embedded_tabs_ui <- function(id){
     uiOutput(NS(id, 'table_module'))    
   )
 }
-
-
 
 mob_embeded_tabs_server <- function(id, language) {  
   moduleServer(id, function(input, output, session) {   
