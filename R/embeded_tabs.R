@@ -1,11 +1,9 @@
 
 # embeded tabs module for income tables
 inc_embedded_tabs_ui <- function(id){
-  
   fluidPage(
     uiOutput(NS(id, 'table_control')),
     uiOutput(NS(id, 'table_module'))
-    
   )
 }
 
@@ -14,8 +12,6 @@ inc_embedded_tabs_ui <- function(id){
 inc_embeded_tabs_server <- function(id, language) {
   
   moduleServer(id, function(input, output, session) {
-
-    
     dictionary <- read.csv('dictionary/dict_main.csv') %>%
       split(.$key)
     
@@ -53,21 +49,16 @@ inc_embeded_tabs_server <- function(id, language) {
     
 # embeded tabs module for mobility tables    
 mob_embedded_tabs_ui <- function(id){
-  
   fluidPage(
     uiOutput(NS(id, 'table_control')),
-    uiOutput(NS(id, 'table_module'))
-    
+    uiOutput(NS(id, 'table_module'))    
   )
 }
 
 
 
-mob_embeded_tabs_server <- function(id, language) {
-  
-  moduleServer(id, function(input, output, session) {
-    
-    
+mob_embeded_tabs_server <- function(id, language) {  
+  moduleServer(id, function(input, output, session) {   
     dictionary <- read.csv('dictionary/dict_main.csv') %>%
       split(.$key)
     
