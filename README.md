@@ -1,5 +1,11 @@
 [(Français)](#indicateurs-longitudinaux-des-apprentis-canadiens)
 
+### Updates on July 8
+-	The RAIS income tables [37-10-0194](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3710019401) and [37-10-0195](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3710019501) have been included in this DV tool.
+-	Within each tab, one more menu(radio button) was added to choose "Net measure" and "Origin and destination" for mobility tab; "Cross-sectional analysis" and "Longitudinal analysis" for income tab.
+-	Demo are available for both language :[English]( https://chaoyang-zheng.shinyapps.io/71-607-x2021018_en/), [French]( https://chaoyang-zheng.shinyapps.io/71-607-x2021018_fr/) .
+
+
 ## Canadian apprenticeship longitudinal indicators
 
 - The dashboard has been released in the offcial website of [Statistics Canada](https://www150.statcan.gc.ca/n1/pub/71-607-x/71-607-x2021018-eng.htm). 
