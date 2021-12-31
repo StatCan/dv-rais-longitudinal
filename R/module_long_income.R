@@ -311,9 +311,7 @@ income_long_server <- function(id, language) {
       validate(need(all(is.na(c(full3$VALUE ))) == FALSE, message = tr("mesg_val") ))
       
       
-      inc_long_text <- format_number(full3$VALUE, locale=language())
-      
-      
+      inc_long_text <- format_dollar(full3$VALUE, locale=language())
       
       # if (input$direc == 1) {
       fig <- plot_ly( x = full3$time_point, 
@@ -322,7 +320,7 @@ income_long_server <- function(id, language) {
                       type = 'scatter', mode = 'lines', 
                       linetype = full3$label, 
                       color =  full3$label,
-                      text = paste0(inc_long_text, " $ <sup>", full3$flag, "</sup>"),
+                      text = paste0(inc_long_text, "<sup>", full3$flag, "</sup>"),
                       source = "inc_long",
                       hovertemplate = "%{x}: %{text}")  %>%
         layout(
@@ -410,22 +408,16 @@ income_long_server <- function(id, language) {
         icon = "toolbox")
     })
     
-    value_status_flag <- function(value, status, flag,is_percernt = FALSE) {
-      if(is_percernt){
-        per_mark = "%"
-      } else(
-        per_mark = ""
-      )
-      
+    value_status_flag <- function(value, status, flag, is_percent = FALSE) {
       if (is.na(value)) {
         status
       } else {
         HTML(
           paste0(
-            format_number(
-              value, locale = language()),
-            "<sup>", flag,
-            "</sup>",per_mark , collapse = NULL))
+            ifelse(is_percent,
+                   format_pct(value, language()),
+                   format_number(value, language())),
+            "<sup>", flag, "</sup>", collapse = NULL))
       }
     }
     
@@ -446,7 +438,7 @@ income_long_server <- function(id, language) {
           df_valuebox()$real_taxfiler[df_valuebox()$supp == selected_supp()],
           df_valuebox()$real_taxfiler_status[df_valuebox()$supp == selected_supp()],
           df_valuebox()$real_taxfiler_flag[df_valuebox()$supp == selected_supp()],
-          is_percernt = TRUE
+          is_percent = TRUE
         ),
         tr("lbl_taxfiler"), size = "small",
         icon = "coins")

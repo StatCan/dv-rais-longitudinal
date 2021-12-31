@@ -38,22 +38,6 @@ ui <- bootstrapPage(
       pathway_ui("pathway")
     ), 
 
-    # tabPanel(
-    #   textOutput("title_inc_cs"),
-    #   income_cs_ui("income_cs")
-    # ),
-    # tabPanel(
-    #   textOutput("title_inc_long"),
-    #   income_long_ui("income_long")
-    # ),
-    
-        
-    # tabPanel(
-    #   textOutput("title_mob_measures"),
-    #   mob_measure_ui("mob_measure")
-    # ),
-    
-    
     tabPanel(
       textOutput("inc_title_embeded_tabs"),
       inc_embedded_tabs_ui("income")
@@ -64,12 +48,6 @@ ui <- bootstrapPage(
       mob_embedded_tabs_ui("mobility")
     )
         
-    
-    # tabPanel(
-    #   textOutput("title_mob_matrix"),
-    #   mob_matrix_ui("mob_matrix")
-    # )
-    
   ) # navbar page
 ) # bootstrap page
 
@@ -87,15 +65,8 @@ server <- function(input, output, session) {
   }
   
   output$title_pathway <- renderText(tr("title_pathway"))
-  
-  # output$title_inc_cs <- renderText(tr("title_inc_cs"))
-  # output$title_inc_long <- renderText(tr("title_inc_long"))
-  # output$title_mob_measures <- renderText(tr("title_mob_measures"))
-  # output$title_mob_matrix <- renderText(tr("title_mob_matrix"))
-  
   output$inc_title_embeded_tabs <- renderText(tr("title_inc_tab"))
   output$mob_title_embeded_tabs <- renderText(tr("title_mob_tab"))
-  
   
   pathway_server("pathway", language)
   inc_embeded_tabs_server("income",language)

@@ -306,14 +306,14 @@ mob_measure_server <- function(id, language) {
       if (input$comp != 3) {
         tick_label <- if (input$comp == 1) {df()$label1} else {df()$label2}
         
-        net_text <- format_number(df()$VALUE_11, locale = language())
-        in_text <- format_number(df()$VALUE_9, locale = language())
-        out_text <- format_number(df()$VALUE_10, locale = language())
+        net_text <- format_pct(df()$VALUE_11, locale = language())
+        in_text <- format_pct(df()$VALUE_9, locale = language())
+        out_text <- format_pct(df()$VALUE_10, locale = language())
         
         fig <- plot_ly(x = replace_na(df()$VALUE_9, 0), y = df()$supp,
                        name = tr("in"), type = "bar", orientation = "h",
                        text = in_text, marker = list(color = '117733'),
-                       hovertemplate = "%{y}: %{text}%", source = "mm"
+                       hovertemplate = "%{y}: %{text}", source = "mm"
                        # when comparing across geography and Canada is selected, show
                        # In and Out and hide Net - always zero.
                        # otherwise, show Net only by default.
@@ -351,22 +351,23 @@ mob_measure_server <- function(id, language) {
           in_measure <- df()$VALUE_6
           out_measure <- df()$VALUE_7
           
-          hover_template <- "%{x}: %{text}"
+          net_text <- format_number(net_measure, locale=language())
+          in_text <- format_number(in_measure, locale=language())
+          out_text <- format_number(out_measure, locale=language())
         } else {
           net_measure <- df()$VALUE_11
           in_measure <- df()$VALUE_9
           out_measure <- df()$VALUE_10
           
-          hover_template <- "%{x}: %{text} %"
+          net_text <- format_pct(net_measure, locale=language())
+          in_text <- format_pct(in_measure, locale=language())
+          out_text <- format_pct(out_measure, locale=language())
         }
-        net_text <- format_number(net_measure, locale=language())
-        in_text <- format_number(in_measure, locale=language())
-        out_text <- format_number(out_measure, locale=language())
-
+        
         fig <- 
           plot_ly(x = df()$supp, y = replace_na(in_measure, 0), name = tr("in"),
                   type = "bar", text = in_text, marker = list(color = '117733'),
-                  hovertemplate = hover_template, source = "mm"
+                  hovertemplate = "%{x}: %{text}", source = "mm"
                   # visible = ifelse(
                   #     (input$geo == 1), TRUE, "legendonly")
                   ) %>%
@@ -436,11 +437,13 @@ mob_measure_server <- function(id, language) {
         icon = "toolbox")
     })
     
-    value_status <- function(value, status) {
+    value_status <- function(value, status, in_pct = FALSE) {
       if (is.na(value)) {
         status
       } else {
-        format_number(value, locale = language())
+        ifelse(in_pct,
+               format_pct(value, locale = language()),
+               format_number(value, locale = language()))
       }
     }
     
@@ -449,12 +452,13 @@ mob_measure_server <- function(id, language) {
       if (is.na(val2)) {
         out2 <- NULL
       } else {
+        out2 <- 
         if (two_in_pct) {
           endian <- " %)"
         } else {
           endian <- " )"
         }
-        out2 <- paste0("(", value_status(val2, stat2), endian)  
+        out2 <- paste0("(", value_status(val2, stat2, two_in_pct), ")")  
       }
       
       return(paste(out1, out2))

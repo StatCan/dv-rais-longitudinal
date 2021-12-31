@@ -387,9 +387,9 @@ pathway_server <- function(id, language) {
       validate(need(all(is.na(c(df()$cert,df()$cont,df()$disc))) == FALSE, message = tr("mesg_val") ))
       
            
-      cert_text <- format_number(df()$cert, locale=language())
-      cont_text <- format_number(df()$cont, locale=language())
-      disc_text <- format_number(df()$disc, locale=language())
+      cert_text <- format_pct(df()$cert, locale=language())
+      cont_text <- format_pct(df()$cont, locale=language())
+      disc_text <- format_pct(df()$disc, locale=language())
       
       if (input$direc != 3) {
         tick_label <- if (input$direc == 1) {df()$label1} else {df()$label2}
@@ -397,17 +397,17 @@ pathway_server <- function(id, language) {
         fig <- plot_ly(
           x = replace_na(df()$cert, 0), y = df()$supp, name = tr("rate_cert"), type = "bar",
           orientation = "h", marker = list(color = '332288'),
-          text = paste0(cert_text, " % <sup>", df()$cert_flag, "</sup>"),
+          text = paste0(cert_text, "<sup>", df()$cert_flag, "</sup>"),
           source = "p",
           hovertemplate = "%{y}: %{text}") %>%
         add_trace(
           x = replace_na(df()$cont, 0), name = tr("rate_cont"),
-          text = paste0(cont_text, " % <sup>", df()$cert_flag, "</sup>"),
+          text = paste0(cont_text, "<sup>", df()$cont_flag, "</sup>"),
           marker = list(color = '117733')) %>%
         add_trace(
           x = replace_na(df()$disc, 0), name = tr("rate_disc"),
           marker = list(color = '882255'),
-          text = paste0(disc_text, " % <sup>", df()$disc_flag, "</sup>")) %>%
+          text = paste0(disc_text, "<sup>", df()$disc_flag, "</sup>")) %>%
         layout(
           barmode = 'stack',
           yaxis = list(
@@ -423,15 +423,15 @@ pathway_server <- function(id, language) {
         fig <- plot_ly(
           x = df()$supp, y = replace_na(df()$cert, 0), name = tr("rate_cert"), type = "bar",
           marker = list(color = '332288'),
-          text = paste0(cert_text, " % <sup>", df()$cert_flag, "</sup>"),
+          text = paste0(cert_text, "<sup>", df()$cert_flag, "</sup>"),
           source = "p",
           hovertemplate = "%{x}:%{text}") %>%
           add_trace(
             y = replace_na(df()$cont, 0), name = tr("rate_cont"), marker = list(color = '117733'),
-            text = paste0(cont_text, " % <sup>", df()$cert_flag, "</sup>")) %>%
+            text = paste0(cont_text, "<sup>", df()$cert_flag, "</sup>")) %>%
           add_trace(
             y = replace_na(df()$disc, 0), name = tr("rate_disc"), marker = list(color = '882255'),
-            text = paste0(disc_text, " % <sup>", df()$disc_flag, "</sup>")) %>%
+            text = paste0(disc_text, "<sup>", df()$disc_flag, "</sup>")) %>%
           layout(
             barmode = 'stack',
             xaxis = list(

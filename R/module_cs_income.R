@@ -354,7 +354,7 @@ income_cs_server <- function(id, language) {
       validate(need(all(is.na(c(df()$real_inc ))) == FALSE, message = tr("mesg_val") ))
       
       
-      inc_text <- format_number(df()$real_inc, locale=language())
+      inc_text <- format_dollar(df()$real_inc, locale=language())
 
       
       if (input$direc != 3) {
@@ -363,7 +363,7 @@ income_cs_server <- function(id, language) {
         fig <- plot_ly(
           x = replace_na(df()$real_inc, 0), y = df()$supp, name = tr("lbl_inc"), type = "bar",
           orientation = "h", marker = list(color = '332288'),
-          text = paste0(inc_text, " $ <sup>", df()$real_inc_flag, "</sup>"),
+          text = paste0(inc_text, "<sup>", df()$real_inc_flag, "</sup>"),
           source = "inc",
           hovertemplate = "%{y}: %{text}") %>%
 
@@ -382,7 +382,7 @@ income_cs_server <- function(id, language) {
         fig <- plot_ly(
           x = df()$supp, y = replace_na(df()$real_inc, 0), name = tr("lbl_inc"), type = "bar",
           marker = list(color = '#387cb4'),
-          text = paste0(inc_text, " $ <sup>", df()$real_inc_flag, "</sup>"),
+          text = paste0(inc_text, "<sup>", df()$real_inc_flag, "</sup>"),
           source = "inc",
           hovertemplate = "%{x}:%{text}") %>%
          
@@ -438,22 +438,16 @@ income_cs_server <- function(id, language) {
         icon = "toolbox")
     })
 
-    value_status_flag <- function(value, status, flag,is_percernt = FALSE) {
-      if(is_percernt){
-        per_mark = "%"
-      } else(
-        per_mark = ""
-      )
-      
+    value_status_flag <- function(value, status, flag, is_percent = FALSE) {
       if (is.na(value)) {
         status
       } else {
         HTML(
           paste0(
-            format_number(
-              value, locale = language()),
-            "<sup>", flag,
-            "</sup>",per_mark , collapse = NULL))
+            ifelse(is_percent,
+                   format_pct(value, language()),
+                   format_number(value, language())),
+            "<sup>", flag, "</sup>", collapse = NULL))
       }
     }
 
@@ -474,7 +468,7 @@ income_cs_server <- function(id, language) {
           df()$real_taxfiler[df()$supp == selected_supp()],
           df()$real_taxfiler_status[df()$supp == selected_supp()],
           df()$real_taxfiler_flag[df()$supp == selected_supp()],
-          is_percernt = TRUE
+          is_percent = TRUE
         ),
         tr("lbl_taxfiler"), size = "small",
         icon = "coins")
