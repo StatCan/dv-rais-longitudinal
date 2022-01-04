@@ -328,8 +328,12 @@ income_long_server <- function(id, language) {
         layout(
           # hovermode = "x unified",
           # clickmode = "event+select",
+          separators = ifelse(language() == "en", ".,", ", "),
           xaxis = list(
             ticktext = full3$time_point
+          ),
+          yaxis = list(
+            tickformat = ",~r"
           )
         )
       

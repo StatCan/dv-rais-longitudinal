@@ -369,6 +369,7 @@ income_cs_server <- function(id, language) {
           hovertemplate = paste0("%{y}", format_colon(locale=language()),
                                  "%{text}<extra></extra>")) %>%
           layout(
+            separators = ifelse(language() == "en", ".,", ", "),
             yaxis = list(
               ticktext = tick_label,
               tickvals = df()$supp,
@@ -376,7 +377,10 @@ income_cs_server <- function(id, language) {
             ),
             legend=list(
               traceorder = "normal", orientation="h", yanchor="bottom",
-              y=1.05, xanchor="left", x=0))
+              y=1.05, xanchor="left", x=0),
+            xaxis = list(
+              tickformat = ",~r"
+            ))
       } else { #comparing over time
         fig <- plot_ly(
           x = df()$supp, y = replace_na(df()$real_inc, 0), name = tr("lbl_inc"), type = "bar",
@@ -388,6 +392,7 @@ income_cs_server <- function(id, language) {
                                  "%{text}<extra></extra>")) %>%
          
           layout(
+            separators = ifelse(language() == "en", ".,", ", "),
             xaxis = list(
               ticktext = df()$label3,
               tickvals = df()$supp,
@@ -395,7 +400,10 @@ income_cs_server <- function(id, language) {
             ),
             legend=list(
               traceorder = "normal", orientation="h", yanchor="bottom",
-              y=1.05, xanchor="left", x=0))
+              y=1.05, xanchor="left", x=0),
+            yaxis = list(
+              tickformat = ",~r"
+            ))
       }
     }) #renderPlotly
     
