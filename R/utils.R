@@ -76,6 +76,6 @@ value_status_flag <- function(value, status, flag, is_percent = FALSE, locale = 
         ifelse(is_percent,
                format_pct(value, locale = locale),
                format_number(value, locale = locale)),
-        "<sup>", str_trim(flag), "</sup>", collapse = NULL))
+        "<sup>", flag, "</sup>", collapse = NULL))
   }
 }
