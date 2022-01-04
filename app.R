@@ -8,6 +8,9 @@ library(shinyWidgets)
 library(httr)
 options(shiny.usecairo=T)
 
+source("R/utils.R")
+source("R/valuebox.R")
+
 source("R/module_pathway.R")
 source("R/module_mobility_matrix.R")
 source("R/module_mobility_measure.R")
@@ -54,7 +57,7 @@ ui <- bootstrapPage(
 
 server <- function(input, output, session) {
   
-  language <- reactiveVal("en")
+  language <- reactiveVal("fr")
   
   dictionary <- read.csv('dictionary/dict_main.csv') %>%
     split(.$key)

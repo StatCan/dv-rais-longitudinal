@@ -45,7 +45,8 @@ income_long_server <- function(id, language) {
   moduleServer(id, function(input, output, session) {
     
     # Preparation --------------------------------------------------------------
-    source("R/format_number.R")
+    # source("R/utils.R")
+    # source("R/valuebox.R")
     
     # language <- reactiveVal(language)
     
@@ -319,10 +320,11 @@ income_long_server <- function(id, language) {
                       type = 'scatter', mode = 'lines+markers', 
                       linetype = full3$label, 
                       color =  full3$label, colors = "Dark2",
-                      text = paste0(inc_long_text, "<sup>", full3$flag, "</sup>"),
+                      text = paste0(full3$label, format_colon(locale=language()),
+                                    inc_long_text, "<sup>", str_trim(full3$flag), "</sup>"),
                       textposition = "none",
                       source = "inc_long",
-                      hovertemplate = "%{x}: %{text}")  %>%
+                      hovertemplate = "%{x}<br>%{text}<extra></extra>")  %>%
         layout(
           # hovermode = "x unified",
           # clickmode = "event+select",
@@ -405,25 +407,13 @@ income_long_server <- function(id, language) {
         icon = "toolbox")
     })
     
-    value_status_flag <- function(value, status, flag, is_percent = FALSE) {
-      if (is.na(value)) {
-        status
-      } else {
-        HTML(
-          paste0(
-            ifelse(is_percent,
-                   format_pct(value, language()),
-                   format_number(value, language())),
-            "<sup>", flag, "</sup>", collapse = NULL))
-      }
-    }
-    
     output$vbox_cohort <- renderValueBox({
       my_valueBox(
         value_status_flag(
           df_valuebox()$VALUE_1[df_valuebox()$supp == selected_supp()],
           df_valuebox()$STATUS_1[df_valuebox()$supp == selected_supp()],
-          df_valuebox()$flag_1[df_valuebox()$supp == selected_supp()]
+          df_valuebox()$flag_1[df_valuebox()$supp == selected_supp()],
+          locale = language()
         ),
         tr("cohort"), icon = "users", size = "small")
     })
@@ -435,7 +425,8 @@ income_long_server <- function(id, language) {
           df_valuebox()$real_taxfiler[df_valuebox()$supp == selected_supp()],
           df_valuebox()$real_taxfiler_status[df_valuebox()$supp == selected_supp()],
           df_valuebox()$real_taxfiler_flag[df_valuebox()$supp == selected_supp()],
-          is_percent = TRUE
+          is_percent = TRUE,
+          locale = language()
         ),
         tr("lbl_taxfiler"), size = "small",
         icon = "coins")
@@ -447,7 +438,8 @@ income_long_server <- function(id, language) {
         value_status_flag(
           df_valuebox()$VALUE_2[df_valuebox()$supp == selected_supp()],
           df_valuebox()$STATUS_2[df_valuebox()$supp == selected_supp()],
-          df_valuebox()$flag_2[df_valuebox()$supp == selected_supp()]
+          df_valuebox()$flag_2[df_valuebox()$supp == selected_supp()],
+          locale = language()
         ),
         tr("age_cert"), size = "small",
         icon = "award")

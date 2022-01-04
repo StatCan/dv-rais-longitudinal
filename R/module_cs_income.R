@@ -46,8 +46,8 @@ income_cs_server <- function(id, language) {
   moduleServer(id, function(input, output, session) {
     
     # Preparation --------------------------------------------------------------
-    source("R/format_number.R")
-    source("R/valuebox.R")
+    # source("R/utils.R")
+    # source("R/valuebox.R")
     
     # language <- reactiveVal("en")
     
@@ -363,19 +363,17 @@ income_cs_server <- function(id, language) {
         fig <- plot_ly(
           x = replace_na(df()$real_inc, 0), y = df()$supp, name = tr("lbl_inc"), type = "bar",
           orientation = "h", marker = list(color = '332288'),
-          text = paste0(inc_text, "<sup>", df()$real_inc_flag, "</sup>"),
+          text = paste0(inc_text, "<sup>", str_trim(df()$real_inc_flag), "</sup>"),
           textposition = "none",
           source = "inc",
-          hovertemplate = "%{y}: %{text}") %>%
-
+          hovertemplate = paste0("%{y}", format_colon(locale=language()),
+                                 "%{text}<extra></extra>")) %>%
           layout(
-            # barmode = 'group',
             yaxis = list(
               ticktext = tick_label,
               tickvals = df()$supp,
               autorange = "reversed"
             ),
-            # xaxis = list(range = c(-2, 100)), # a way to add gap between axis label and the axis
             legend=list(
               traceorder = "normal", orientation="h", yanchor="bottom",
               y=1.05, xanchor="left", x=0))
@@ -383,13 +381,13 @@ income_cs_server <- function(id, language) {
         fig <- plot_ly(
           x = df()$supp, y = replace_na(df()$real_inc, 0), name = tr("lbl_inc"), type = "bar",
           marker = list(color = '#387cb4'),
-          text = paste0(inc_text, "<sup>", df()$real_inc_flag, "</sup>"),
+          text = paste0(inc_text, "<sup>", str_trim(df()$real_inc_flag), "</sup>"),
           textposition = "none",
           source = "inc",
-          hovertemplate = "%{x}:%{text}") %>%
+          hovertemplate = paste0("%{x}", format_colon(locale=language()),
+                                 "%{text}<extra></extra>")) %>%
          
           layout(
-            barmode = 'stack',
             xaxis = list(
               ticktext = df()$label3,
               tickvals = df()$supp,
@@ -440,29 +438,16 @@ income_cs_server <- function(id, language) {
         icon = "toolbox")
     })
 
-    value_status_flag <- function(value, status, flag, is_percent = FALSE) {
-      if (is.na(value)) {
-        status
-      } else {
-        HTML(
-          paste0(
-            ifelse(is_percent,
-                   format_pct(value, language()),
-                   format_number(value, language())),
-            "<sup>", flag, "</sup>", collapse = NULL))
-      }
-    }
-
     output$vbox_cohort <- renderValueBox({
       my_valueBox(
         value_status_flag(
           df()$VALUE_1[df()$supp == selected_supp()],
           df()$STATUS_1[df()$supp == selected_supp()],
-          df()$flag_1[df()$supp == selected_supp()]
+          df()$flag_1[df()$supp == selected_supp()],
+          locale = language()
         ),
         tr("cohort"), icon = "users", size = "small")
     })
-    
     
     output$vbox_tax_filers <- renderValueBox({
       my_valueBox(
@@ -470,7 +455,8 @@ income_cs_server <- function(id, language) {
           df()$real_taxfiler[df()$supp == selected_supp()],
           df()$real_taxfiler_status[df()$supp == selected_supp()],
           df()$real_taxfiler_flag[df()$supp == selected_supp()],
-          is_percent = TRUE
+          is_percent = TRUE,
+          locale = language()
         ),
         tr("lbl_taxfiler"), size = "small",
         icon = "coins")
@@ -482,7 +468,8 @@ income_cs_server <- function(id, language) {
         value_status_flag(
           df()$VALUE_2[df()$supp == selected_supp()],
           df()$STATUS_2[df()$supp == selected_supp()],
-          df()$flag_2[df()$supp == selected_supp()]
+          df()$flag_2[df()$supp == selected_supp()],
+          locale = language()
         ),
         tr("age_cert"), size = "small",
         icon = "award")

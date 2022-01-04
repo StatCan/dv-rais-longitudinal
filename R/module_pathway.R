@@ -44,8 +44,6 @@ pathway_server <- function(id, language) {
   moduleServer(id, function(input, output, session) {
     
     # Preparation --------------------------------------------------------------
-    source("R/format_number.R")
-    
     dictionary <- read.csv('dictionary/dict_pathway.csv') %>%
       split(.$key)
     
@@ -397,18 +395,21 @@ pathway_server <- function(id, language) {
         fig <- plot_ly(
           x = replace_na(df()$cert, 0), y = df()$supp, name = tr("rate_cert"), type = "bar",
           orientation = "h", marker = list(color = '332288'),
-          text = paste0(cert_text, "<sup>", df()$cert_flag, "</sup>"),
+          text = paste0(tr("rate_cert"), format_colon(locale=language()),
+                        cert_text, "<sup>", str_trim(df()$cert_flag), "</sup>"),
           textposition = "none",
           source = "p",
-          hovertemplate = "%{y}: %{text}") %>%
+          hovertemplate = "%{y}<br>%{text}<extra></extra>") %>%
         add_trace(
           x = replace_na(df()$cont, 0), name = tr("rate_cont"),
-          text = paste0(cont_text, "<sup>", df()$cont_flag, "</sup>"),
+          text = paste0(tr("rate_cont"), format_colon(locale=language()),
+                        cont_text, "<sup>", str_trim(df()$cont_flag), "</sup>"),
           marker = list(color = '117733')) %>%
         add_trace(
           x = replace_na(df()$disc, 0), name = tr("rate_disc"),
           marker = list(color = '882255'),
-          text = paste0(disc_text, "<sup>", df()$disc_flag, "</sup>")) %>%
+          text = paste0(tr("rate_disc"), format_colon(locale=language()),
+                        disc_text, "<sup>", str_trim(df()$disc_flag), "</sup>")) %>%
         layout(
           barmode = 'stack',
           yaxis = list(
@@ -424,16 +425,19 @@ pathway_server <- function(id, language) {
         fig <- plot_ly(
           x = df()$supp, y = replace_na(df()$cert, 0), name = tr("rate_cert"), type = "bar",
           marker = list(color = '332288'),
-          text = paste0(cert_text, "<sup>", df()$cert_flag, "</sup>"),
+          text = paste0(tr("rate_cert"), format_colon(locale=language()),
+                        cert_text, "<sup>", str_trim(df()$cert_flag), "</sup>"),
           textposition = "none",
           source = "p",
-          hovertemplate = "%{x}:%{text}") %>%
+          hovertemplate = "%{x}<br>%{text}<extra></extra>") %>%
           add_trace(
             y = replace_na(df()$cont, 0), name = tr("rate_cont"), marker = list(color = '117733'),
-            text = paste0(cont_text, "<sup>", df()$cert_flag, "</sup>")) %>%
+            text = paste0(tr("rate_cont"), format_colon(locale=language()),
+                          cont_text, "<sup>", str_trim(df()$cert_flag), "</sup>")) %>%
           add_trace(
             y = replace_na(df()$disc, 0), name = tr("rate_disc"), marker = list(color = '882255'),
-            text = paste0(disc_text, "<sup>", df()$disc_flag, "</sup>")) %>%
+            text = paste0(tr("rate_disc"), format_colon(locale=language()),
+                          disc_text, "<sup>", str_trim(df()$disc_flag), "</sup>")) %>%
           layout(
             barmode = 'stack',
             xaxis = list(
@@ -486,25 +490,13 @@ pathway_server <- function(id, language) {
         icon = "toolbox")
     })
     
-    value_status_flag <- function(value, status, flag) {
-      if (is.na(value)) {
-        status
-      } else {
-        HTML(
-          paste0(
-            format_number(
-              value, locale = language()),
-            "<sup>", flag,
-            "</sup>", collapse = NULL))
-      }
-    }
-
     output$vbox_cohort <- renderValueBox({
       my_valueBox(
         value_status_flag(
           df()$cohort[df()$supp == selected_supp()],
           df()$cohort_stat[df()$supp == selected_supp()],
-          df()$cohort_flag[df()$supp == selected_supp()]
+          df()$cohort_flag[df()$supp == selected_supp()],
+          locale = language()
         ),
         tr("cohort"), icon = "users", size = "small")
     })
@@ -514,7 +506,8 @@ pathway_server <- function(id, language) {
         value_status_flag(
           df()$age_reg[df()$supp == selected_supp()],
           df()$age_reg_stat[df()$supp == selected_supp()],
-          df()$age_reg_flag[df()$supp == selected_supp()]
+          df()$age_reg_flag[df()$supp == selected_supp()],
+          locale = language()
         ),
         tr("age_reg"), size = "small", icon = "flag")
     })
@@ -524,7 +517,8 @@ pathway_server <- function(id, language) {
         value_status_flag(
           df()$time_cert[df()$supp == selected_supp()],
           df()$time_cert_stat[df()$supp == selected_supp()],
-          df()$time_cert_flag[df()$supp == selected_supp()]
+          df()$time_cert_flag[df()$supp == selected_supp()],
+          locale = language()
         ),
         tr("time_cert"), size = "small",
         icon = "calendar-check")
@@ -535,7 +529,8 @@ pathway_server <- function(id, language) {
         value_status_flag(
           df()$durpgm[df()$supp == selected_supp()],
           df()$durpgm_stat[df()$supp == selected_supp()],
-          df()$durpgm_flag[df()$supp == selected_supp()]
+          df()$durpgm_flag[df()$supp == selected_supp()],
+          locale = language()
         ),
         tr("dur_pgm"), size = "small",
         icon ="hourglass-half")
@@ -546,7 +541,8 @@ pathway_server <- function(id, language) {
         value_status_flag(
           df()$age_cert[df()$supp == selected_supp()],
           df()$age_cert_stat[df()$supp == selected_supp()],
-          df()$age_cert_flag[df()$supp == selected_supp()]
+          df()$age_cert_flag[df()$supp == selected_supp()],
+          locale = language()
         ),
         tr("age_cert"), size = "small",
         icon = "award")
@@ -557,7 +553,8 @@ pathway_server <- function(id, language) {
         value_status_flag(
           df()$time_disc[df()$supp == selected_supp()],
           df()$time_disc_stat[df()$supp == selected_supp()],
-          df()$time_disc_flag[df()$supp == selected_supp()]
+          df()$time_disc_flag[df()$supp == selected_supp()],
+          locale = language()
         ),
         tr("time_disc"), size = "small",
         icon = "calendar-times")

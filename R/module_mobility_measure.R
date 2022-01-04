@@ -41,8 +41,8 @@ mob_measure_ui <- function(id) {
 mob_measure_server <- function(id, language) {
 
   moduleServer(id, function(input, output, session) {
-    source("R/format_number.R")
-    source("R/valuebox.R")
+    # source("R/utils.R")
+    # source("R/valuebox.R")
     
     dictionary <- read.csv('dictionary/dict_mobility_measures.csv') %>%
       split(.$key)
@@ -312,9 +312,11 @@ mob_measure_server <- function(id, language) {
         
         fig <- plot_ly(x = replace_na(df()$VALUE_9, 0), y = df()$supp,
                        name = tr("in"), type = "bar", orientation = "h",
-                       text = in_text, textposition = "none",
+                       text = paste0(tr("in"), format_colon(locale=language()), in_text),
+                       textposition = "none",
                        marker = list(color = '117733'),
-                       hovertemplate = "%{y}: %{text}", source = "mm"
+                       hovertemplate = "%{y}<br>%{text}<extra></extra>",
+                       source = "mm"
                        # when comparing across geography and Canada is selected, show
                        # In and Out and hide Net - always zero.
                        # otherwise, show Net only by default.
@@ -322,12 +324,14 @@ mob_measure_server <- function(id, language) {
                        #   (input$comp == 2 & input$geo == 1), TRUE, "legendonly")
           ) %>%
           add_trace(x = replace_na(df()$VALUE_10, 0), name = tr("out"),
-                    text = out_text, marker = list(color = '882255')
+                    text = paste0(tr("out"), format_colon(locale=language()), out_text),
+                    marker = list(color = '882255')
                     # visible = ifelse(
                     #   (input$comp == 2 & input$geo == 1), TRUE, "legendonly")
           ) %>%
           add_trace(x = replace_na(df()$VALUE_11, 0), name = tr("net"),
-                    text = net_text, marker = list(color = '332288')
+                    text = paste0(tr("net"), format_colon(locale=language()), net_text),
+                    marker = list(color = '332288')
                     # visible = ifelse(
                     #   (input$comp == 2 & input$geo == 1), "legendonly", TRUE)
           ) %>%
@@ -367,19 +371,23 @@ mob_measure_server <- function(id, language) {
         
         fig <- 
           plot_ly(x = df()$supp, y = replace_na(in_measure, 0), name = tr("in"),
-                  type = "bar", text = in_text, textposition = "none",
+                  type = "bar",
+                  text = paste0(tr("in"), format_colon(locale=language()), in_text),
+                  textposition = "none",
                   marker = list(color = '117733'),
-                  hovertemplate = "%{x}: %{text}", source = "mm"
+                  hovertemplate = "%{x}<br>%{text}<extra></extra>", source = "mm"
                   # visible = ifelse(
                   #     (input$geo == 1), TRUE, "legendonly")
                   ) %>%
           add_trace(y = replace_na(out_measure, 0), name = tr("out"),
-                    text = out_text, marker = list(color = '882255')
+                    text = paste0(tr("out"), format_colon(locale=language()), out_text),
+                    marker = list(color = '882255')
                     # visible = ifelse(
                     #   (input$geo == 1), TRUE, "legendonly")
                     ) %>%
           add_trace(y = replace_na(net_measure, 0), name = tr("net"),
-                    text = net_text, marker = list(color = '332288')
+                    text = paste0(tr("net"), format_colon(locale=language()), net_text),
+                    marker = list(color = '332288')
                     # visible = ifelse(
                     #   (input$geo == 1), "legendonly", TRUE)
                     ) %>%
