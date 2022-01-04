@@ -317,9 +317,9 @@ income_long_server <- function(id, language) {
       fig <- plot_ly( x = full3$time_point, 
                       y = full3$VALUE, 
                       # y = replace_na(full3$VALUE,0), 
-                      type = 'scatter', mode = 'lines', 
+                      type = 'scatter', mode = 'lines+markers', 
                       linetype = full3$label, 
-                      color =  full3$label,
+                      color =  full3$label, colors = "Dark2",
                       text = paste0(inc_long_text, "<sup>", full3$flag, "</sup>"),
                       source = "inc_long",
                       hovertemplate = "%{x}: %{text}")  %>%
