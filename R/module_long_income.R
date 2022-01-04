@@ -313,7 +313,6 @@ income_long_server <- function(id, language) {
       
       inc_long_text <- format_dollar(full3$VALUE, locale=language())
       
-      # if (input$direc == 1) {
       fig <- plot_ly( x = full3$time_point, 
                       y = full3$VALUE, 
                       # y = replace_na(full3$VALUE,0), 
@@ -321,6 +320,7 @@ income_long_server <- function(id, language) {
                       linetype = full3$label, 
                       color =  full3$label, colors = "Dark2",
                       text = paste0(inc_long_text, "<sup>", full3$flag, "</sup>"),
+                      textposition = "none",
                       source = "inc_long",
                       hovertemplate = "%{x}: %{text}")  %>%
         layout(
@@ -330,9 +330,6 @@ income_long_server <- function(id, language) {
             ticktext = full3$time_point
           )
         )
-      
-      
-      # } 
       
     }) #renderPlotly
     

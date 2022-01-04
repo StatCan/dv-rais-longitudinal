@@ -398,6 +398,7 @@ pathway_server <- function(id, language) {
           x = replace_na(df()$cert, 0), y = df()$supp, name = tr("rate_cert"), type = "bar",
           orientation = "h", marker = list(color = '332288'),
           text = paste0(cert_text, "<sup>", df()$cert_flag, "</sup>"),
+          textposition = "none",
           source = "p",
           hovertemplate = "%{y}: %{text}") %>%
         add_trace(
@@ -424,6 +425,7 @@ pathway_server <- function(id, language) {
           x = df()$supp, y = replace_na(df()$cert, 0), name = tr("rate_cert"), type = "bar",
           marker = list(color = '332288'),
           text = paste0(cert_text, "<sup>", df()$cert_flag, "</sup>"),
+          textposition = "none",
           source = "p",
           hovertemplate = "%{x}:%{text}") %>%
           add_trace(

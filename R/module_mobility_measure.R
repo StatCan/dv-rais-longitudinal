@@ -312,7 +312,8 @@ mob_measure_server <- function(id, language) {
         
         fig <- plot_ly(x = replace_na(df()$VALUE_9, 0), y = df()$supp,
                        name = tr("in"), type = "bar", orientation = "h",
-                       text = in_text, marker = list(color = '117733'),
+                       text = in_text, textposition = "none",
+                       marker = list(color = '117733'),
                        hovertemplate = "%{y}: %{text}", source = "mm"
                        # when comparing across geography and Canada is selected, show
                        # In and Out and hide Net - always zero.
@@ -366,7 +367,8 @@ mob_measure_server <- function(id, language) {
         
         fig <- 
           plot_ly(x = df()$supp, y = replace_na(in_measure, 0), name = tr("in"),
-                  type = "bar", text = in_text, marker = list(color = '117733'),
+                  type = "bar", text = in_text, textposition = "none",
+                  marker = list(color = '117733'),
                   hovertemplate = "%{x}: %{text}", source = "mm"
                   # visible = ifelse(
                   #     (input$geo == 1), TRUE, "legendonly")

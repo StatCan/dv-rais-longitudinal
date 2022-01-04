@@ -364,6 +364,7 @@ income_cs_server <- function(id, language) {
           x = replace_na(df()$real_inc, 0), y = df()$supp, name = tr("lbl_inc"), type = "bar",
           orientation = "h", marker = list(color = '332288'),
           text = paste0(inc_text, "<sup>", df()$real_inc_flag, "</sup>"),
+          textposition = "none",
           source = "inc",
           hovertemplate = "%{y}: %{text}") %>%
 
@@ -383,6 +384,7 @@ income_cs_server <- function(id, language) {
           x = df()$supp, y = replace_na(df()$real_inc, 0), name = tr("lbl_inc"), type = "bar",
           marker = list(color = '#387cb4'),
           text = paste0(inc_text, "<sup>", df()$real_inc_flag, "</sup>"),
+          textposition = "none",
           source = "inc",
           hovertemplate = "%{x}:%{text}") %>%
          
