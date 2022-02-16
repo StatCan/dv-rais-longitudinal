@@ -1,22 +1,15 @@
 [(Français)](#indicateurs-longitudinaux-des-apprentis-canadiens)
 
-### Updates on July 26
-- Changed the tab names for income tables.
-- Changed the name of checkbox "have_sei".
-- Changed the bar color of cs income DV so as to be consistent with pathway.
--	Demo are available in both language :[English]( https://chaoyang-zheng.shinyapps.io/71-607-x2021018_en/), [French]( https://chaoyang-zheng.shinyapps.io/71-607-x2021018_fr/) .
-
-### Updates on July 8
--	The RAIS income tables [37-10-0194](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3710019401) and [37-10-0195](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3710019501) have been included in this DV tool.
--	Within each tab, one more menu(radio button) was added to choose "Net measure" and "Origin and destination" for mobility tab; "Cross-sectional analysis" and "Longitudinal analysis" for income tab.
-
-
-
 ## Canadian apprenticeship longitudinal indicators
 
 - The dashboard has been released in the offcial website of [Statistics Canada](https://www150.statcan.gc.ca/n1/pub/71-607-x/71-607-x2021018-eng.htm). 
 - A data visualization tool to help understand trends and patterns in Canadian apprenticeship longitudinal indicators.
-- Interactive dashboards created in Shiny using data from Statistics Canada Tables [37-10-0193](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3710019301), [37-10-0204](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3710020501) and [37-10-0205](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3710020501)
+- Interactive dashboards created in Shiny using data from Statistics Canada Tables
+[37-10-0193](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3710019301),
+[37-10-0194](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3710019401),
+[37-10-0195](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3710019501),
+[37-10-0204](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3710020501)
+and [37-10-0205](https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=3710020501)
 - For concepts and definitions used, please see the [Reference Guide](https://www150.statcan.gc.ca/n1/en/catalogue/37200001).
 
 ### How to Contribute
@@ -35,7 +28,12 @@ ______________________
 
 - Le tableau de bord a été publié sur le site officiel de [Statistique Canada](https://www150.statcan.gc.ca/n1/pub/71-607-x/71-607-x2021018-fra.htm). 
 - Un outil de visualisation des données pour aider à comprendre les tendances et les schémas de les indicateurs longitudinaux des apprentis canadiens.
-- Tableaux de bord interactifs créés en Shiny à partir des données des tableaux de Statistique Canada  [37-10-0193](https://www150.statcan.gc.ca/t1/tbl1/fr/tv.action?pid=3710019301), [37-10-0204](https://www150.statcan.gc.ca/t1/tbl1/fr/tv.action?pid=3710020501) et [37-10-0205](https://www150.statcan.gc.ca/t1/tbl1/fr/tv.action?pid=3710020501).
+- Tableaux de bord interactifs créés en Shiny à partir des données des tableaux de Statistique Canada 
+[37-10-0193](https://www150.statcan.gc.ca/t1/tbl1/fr/tv.action?pid=3710019301),
+[37-10-0194](https://www150.statcan.gc.ca/t1/tbl1/fr/tv.action?pid=3710019401),
+[37-10-0195](https://www150.statcan.gc.ca/t1/tbl1/fr/tv.action?pid=3710019501),
+[37-10-0204](https://www150.statcan.gc.ca/t1/tbl1/fr/tv.action?pid=3710020401) et
+[37-10-0205](https://www150.statcan.gc.ca/t1/tbl1/fr/tv.action?pid=3710020501).
 - Pour les concepts et définitions utilisés, veuillez consulter le [guide de référence](https://www150.statcan.gc.ca/n1/fr/catalogue/37200001).
 
 ### Comment contribuer
