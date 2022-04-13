@@ -40,6 +40,6 @@ jobs:
       - name: Commit files
         run: |
           git add ./data
-          git commit -S -m "updated pathway data"
+          git commit -S -m "updated pathway data (through GitHub Actions)"
           git push
 

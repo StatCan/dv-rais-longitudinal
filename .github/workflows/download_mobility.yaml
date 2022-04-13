@@ -40,6 +40,6 @@ jobs:
       - name: Commit files
         run: |
           git add ./data
-          git commit -S -m "updated mobility data"
+          git commit -S -m "updated mobility data (through GitHub Actions)"
           git push
 

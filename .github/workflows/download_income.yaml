@@ -40,6 +40,6 @@ jobs:
       - name: Commit files
         run: |
           git add ./data
-          git commit -S -m "updated income data"
+          git commit -S -m "updated income data (through GitHub Actions)"
           git push
 
