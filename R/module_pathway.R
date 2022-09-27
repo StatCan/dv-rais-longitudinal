@@ -87,7 +87,8 @@ pathway_server <- function(id, language) {
       ifelse(is.na(SYMBOL), " ", SYMBOL))) %>%
       pivot_wider(id_cols=c(REF_DATE, dim_geo, dim_sex, dim_trade),
                   names_from=dim_ind, values_from=c(VALUE, STATUS, flag)) %>%
-      subset(REF_DATE <= (max(.$REF_DATE) - 4)) %>% # keep only if they are at least 4 years old
+      # keep only if they are at least 4 years old: the table already has at least 1 year old cohorts.
+      subset(REF_DATE <= (max(.$REF_DATE) - 3)) %>% 
       as.data.frame() %>%
       mutate(
         cohort = as.integer(VALUE_1),
