@@ -31,6 +31,12 @@ jobs:
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
           git_user_signingkey: true
           git_commit_gpgsign: true  
+          
+      - name: prepare a new branch
+        run: |
+          git branch refresh_data
+          git checkout refresh_data
+          git rm ./data/*.Rds
 
       - name: Download and process data
         run: |
@@ -40,5 +46,5 @@ jobs:
         run: |
           git add ./data
           git commit -S -m "updated income and mobility data (through GitHub Actions)"
-          git push
+          git push --upstream origin refresh_data
 
