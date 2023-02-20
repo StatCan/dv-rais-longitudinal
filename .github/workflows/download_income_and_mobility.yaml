@@ -47,5 +47,5 @@ jobs:
         run: |
           git add ./data
           git commit -S -m "updated income and mobility data (through GitHub Actions)"
-          git push --upstream origin refresh_data
+          git push --set-upstream origin refresh_data
 
