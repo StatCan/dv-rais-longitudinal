@@ -37,6 +37,7 @@ jobs:
           git branch refresh_data
           git checkout refresh_data
           git rm ./data/*.Rds
+          git commit -S -m "removed existing Rds files"
 
       - name: Download and process data
         run: |
@@ -44,7 +45,6 @@ jobs:
 
       - name: Commit files
         run: |
-          git checkout refresh_data
           git add ./data
           git commit -S -m "updated income and mobility data (through GitHub Actions)"
           git push --upstream origin refresh_data
