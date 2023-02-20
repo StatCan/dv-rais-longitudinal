@@ -44,6 +44,7 @@ jobs:
 
       - name: Commit files
         run: |
+          git checkout refresh_data
           git add ./data
           git commit -S -m "updated income and mobility data (through GitHub Actions)"
           git push --upstream origin refresh_data
