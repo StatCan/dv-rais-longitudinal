@@ -22,7 +22,7 @@ jobs:
       - uses: r-lib/actions/setup-r@v2
         with:
           r-version: ${{ matrix.config.r }}
-          intall-r: 'false'
+          install-r: 'false'
 
       - name: Import GPG Key
         uses: crazy-max/ghaction-import-gpg@v5
