@@ -14,24 +14,30 @@ jobs:
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
-      RSPM: ${{ matrix.config.rspm }}
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - uses: r-lib/actions/setup-r@master
+      - uses: r-lib/actions/setup-r@v2
         with:
           r-version: ${{ matrix.config.r }}
-          http-user-agent: ${{ matrix.config.http-user-agent }}
+          install-r: 'false'
 
       - name: Import GPG Key
-        uses: crazy-max/ghaction-import-gpg@v4
+        uses: crazy-max/ghaction-import-gpg@v5
         with:
           gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
           git_user_signingkey: true
           git_commit_gpgsign: true  
+          
+      - name: prepare a new branch
+        run: |
+          git branch refresh_data
+          git checkout refresh_data
+          git rm ./data/*.Rds
+          git commit -S -m "removed existing Rds files"
 
       - name: Download and process data
         run: |
@@ -40,6 +46,6 @@ jobs:
       - name: Commit files
         run: |
           git add ./data
-          git commit -S -m "updated income data (through GitHub Actions)"
-          git push
+          git commit -S -m "updated income and mobility data (through GitHub Actions)"
+          git push --set-upstream origin refresh_data
 
