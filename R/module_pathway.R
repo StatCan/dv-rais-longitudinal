@@ -396,21 +396,21 @@ pathway_server <- function(id, language) {
         fig <- plot_ly(
           x = replace_na(df()$cert, 0), y = df()$supp, name = tr("rate_cert"), type = "bar",
           orientation = "h", marker = list(color = '332288'),
-          text = paste0(tr("rate_cert"), format_colon(locale=language()),
-                        cert_text, "<sup>", str_trim(df()$cert_flag), "</sup>"),
+          customdata = paste0(tick_label, "<br>", tr("rate_cert"), format_colon(locale=language()),
+                        cert_text, "<sup>", str_trim(df()$cert_flag), "</sup><extra></extra>"),
           textposition = "none",
           source = "p",
-          hovertemplate = "%{y}<br>%{text}<extra></extra>") %>%
+          hovertemplate = "%{customdata}") %>%
         add_trace(
           x = replace_na(df()$cont, 0), name = tr("rate_cont"),
-          text = paste0(tr("rate_cont"), format_colon(locale=language()),
-                        cont_text, "<sup>", str_trim(df()$cont_flag), "</sup>"),
+          customdata = paste0(tick_label, "<br>", tr("rate_cont"), format_colon(locale=language()),
+                        cont_text, "<sup>", str_trim(df()$cont_flag), "</sup><extra></extra>"),
           marker = list(color = '117733')) %>%
         add_trace(
           x = replace_na(df()$disc, 0), name = tr("rate_disc"),
           marker = list(color = '882255'),
-          text = paste0(tr("rate_disc"), format_colon(locale=language()),
-                        disc_text, "<sup>", str_trim(df()$disc_flag), "</sup>")) %>%
+          customdata = paste0(tick_label, "<br>", tr("rate_disc"), format_colon(locale=language()),
+                        disc_text, "<sup>", str_trim(df()$disc_flag), "</sup><extra></extra>")) %>%
         layout(
           barmode = 'stack',
           yaxis = list(
@@ -426,19 +426,19 @@ pathway_server <- function(id, language) {
         fig <- plot_ly(
           x = df()$supp, y = replace_na(df()$cert, 0), name = tr("rate_cert"), type = "bar",
           marker = list(color = '332288'),
-          text = paste0(tr("rate_cert"), format_colon(locale=language()),
-                        cert_text, "<sup>", str_trim(df()$cert_flag), "</sup>"),
+          customdata = paste0(df()$label3, "<br>", tr("rate_cert"), format_colon(locale=language()),
+                        cert_text, "<sup>", str_trim(df()$cert_flag), "</sup><extra></extra>"),
           textposition = "none",
           source = "p",
-          hovertemplate = "%{x}<br>%{text}<extra></extra>") %>%
+          hovertemplate = "%{customdata}") %>%
           add_trace(
             y = replace_na(df()$cont, 0), name = tr("rate_cont"), marker = list(color = '117733'),
-            text = paste0(tr("rate_cont"), format_colon(locale=language()),
-                          cont_text, "<sup>", str_trim(df()$cert_flag), "</sup>")) %>%
+            customdata = paste0(df()$label3, "<br>", tr("rate_cont"), format_colon(locale=language()),
+                          cont_text, "<sup>", str_trim(df()$cert_flag), "</sup><extra></extra>")) %>%
           add_trace(
             y = replace_na(df()$disc, 0), name = tr("rate_disc"), marker = list(color = '882255'),
-            text = paste0(tr("rate_disc"), format_colon(locale=language()),
-                          disc_text, "<sup>", str_trim(df()$disc_flag), "</sup>")) %>%
+            customdata = paste0(df()$label3, "<br>", tr("rate_disc"), format_colon(locale=language()),
+                          disc_text, "<sup>", str_trim(df()$disc_flag), "</sup><extra></extra>")) %>%
           layout(
             barmode = 'stack',
             xaxis = list(

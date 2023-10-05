@@ -363,11 +363,11 @@ income_cs_server <- function(id, language) {
         fig <- plot_ly(
           x = replace_na(df()$real_inc, 0), y = df()$supp, name = tr("lbl_inc"), type = "bar",
           orientation = "h", marker = list(color = '332288'),
-          text = paste0(inc_text, "<sup>", str_trim(df()$real_inc_flag), "</sup>"),
+          customdata = paste0(tick_label, format_colon(locale=language()), inc_text,
+                              "<sup>", str_trim(df()$real_inc_flag), "</sup><extra></extra>"),
           textposition = "none",
           source = "inc",
-          hovertemplate = paste0("%{y}", format_colon(locale=language()),
-                                 "%{text}<extra></extra>")) %>%
+          hovertemplate = "%{customdata}") %>%
           layout(
             separators = ifelse(language() == "en", ".,", ", "),
             yaxis = list(
@@ -385,11 +385,11 @@ income_cs_server <- function(id, language) {
         fig <- plot_ly(
           x = df()$supp, y = replace_na(df()$real_inc, 0), name = tr("lbl_inc"), type = "bar",
           marker = list(color = '#387cb4'),
-          text = paste0(inc_text, "<sup>", str_trim(df()$real_inc_flag), "</sup>"),
+          customdata = paste0(df()$label3, format_colon(locale=language()),
+                              inc_text, "<sup>", str_trim(df()$real_inc_flag), "</sup><extra></extra>"),
           textposition = "none",
           source = "inc",
-          hovertemplate = paste0("%{x}", format_colon(locale=language()),
-                                 "%{text}<extra></extra>")) %>%
+          hovertemplate = "%{customdata}") %>%
          
           layout(
             separators = ifelse(language() == "en", ".,", ", "),

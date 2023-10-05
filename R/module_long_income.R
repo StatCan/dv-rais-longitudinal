@@ -320,11 +320,11 @@ income_long_server <- function(id, language) {
                       type = 'scatter', mode = 'lines+markers', 
                       linetype = full3$label, 
                       color =  full3$label, colors = "Dark2",
-                      text = paste0(full3$label, format_colon(locale=language()),
-                                    inc_long_text, "<sup>", str_trim(full3$flag), "</sup>"),
+                      customdata = paste0(full3$time_point, "<br>", full3$label, format_colon(locale=language()),
+                                    inc_long_text, "<sup>", str_trim(full3$flag), "</sup><extra></extra>"),
                       textposition = "none",
                       source = "inc_long",
-                      hovertemplate = "%{x}<br>%{text}<extra></extra>")  %>%
+                      hovertemplate = "%{customdata}")  %>%
         layout(
           # hovermode = "x unified",
           # clickmode = "event+select",

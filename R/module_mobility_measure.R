@@ -312,10 +312,12 @@ mob_measure_server <- function(id, language) {
         
         fig <- plot_ly(x = replace_na(df()$VALUE_9, 0), y = df()$supp,
                        name = tr("in"), type = "bar", orientation = "h",
-                       text = paste0(tr("in"), format_colon(locale=language()), in_text),
+                       customdata = paste0(tick_label, "<br>", tr("in"),
+                                           format_colon(locale=language()),
+                                           in_text, "<extra></extra>"),
                        textposition = "none",
                        marker = list(color = '117733'),
-                       hovertemplate = "%{y}<br>%{text}<extra></extra>",
+                       hovertemplate = "%{customdata}",
                        source = "mm"
                        # when comparing across geography and Canada is selected, show
                        # In and Out and hide Net - always zero.
@@ -324,13 +326,17 @@ mob_measure_server <- function(id, language) {
                        #   (input$comp == 2 & input$geo == 1), TRUE, "legendonly")
           ) %>%
           add_trace(x = replace_na(df()$VALUE_10, 0), name = tr("out"),
-                    text = paste0(tr("out"), format_colon(locale=language()), out_text),
+                    customdata = paste0(tick_label, "<br>",
+                                        tr("out"), format_colon(locale=language()),
+                                        out_text, "<extra></extra>"),
                     marker = list(color = '882255')
                     # visible = ifelse(
                     #   (input$comp == 2 & input$geo == 1), TRUE, "legendonly")
           ) %>%
           add_trace(x = replace_na(df()$VALUE_11, 0), name = tr("net"),
-                    text = paste0(tr("net"), format_colon(locale=language()), net_text),
+                    customdata = paste0(tick_label, "<br>", tr("net"),
+                                        format_colon(locale=language()), net_text,
+                                        "<extra></extra>"),
                     marker = list(color = '332288')
                     # visible = ifelse(
                     #   (input$comp == 2 & input$geo == 1), "legendonly", TRUE)
@@ -372,21 +378,24 @@ mob_measure_server <- function(id, language) {
         fig <- 
           plot_ly(x = df()$supp, y = replace_na(in_measure, 0), name = tr("in"),
                   type = "bar",
-                  text = paste0(tr("in"), format_colon(locale=language()), in_text),
+                  customdata = paste0(df()$label3, "<br>", tr("in"),
+                                format_colon(locale=language()), in_text, "<extra></extra>"),
                   textposition = "none",
                   marker = list(color = '117733'),
-                  hovertemplate = "%{x}<br>%{text}<extra></extra>", source = "mm"
+                  hovertemplate = "%{customdata}", source = "mm"
                   # visible = ifelse(
                   #     (input$geo == 1), TRUE, "legendonly")
                   ) %>%
           add_trace(y = replace_na(out_measure, 0), name = tr("out"),
-                    text = paste0(tr("out"), format_colon(locale=language()), out_text),
+                    customdata = paste0(df()$label3, "<br>", tr("out"),
+                                        format_colon(locale=language()), out_text, "<extra></extra>"),
                     marker = list(color = '882255')
                     # visible = ifelse(
                     #   (input$geo == 1), TRUE, "legendonly")
                     ) %>%
           add_trace(y = replace_na(net_measure, 0), name = tr("net"),
-                    text = paste0(tr("net"), format_colon(locale=language()), net_text),
+                    customdata = paste0(df()$label3, "<br>", tr("net"),
+                                        format_colon(locale=language()), net_text, "<extra></extra>"),
                     marker = list(color = '332288')
                     # visible = ifelse(
                     #   (input$geo == 1), "legendonly", TRUE)
